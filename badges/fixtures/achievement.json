@@ -7,7 +7,9 @@
         "description": "Aprendiz de listas: Al menos un ejercicio del conjunto de problemas de listas",
         "symbol": "★☰",
         "logic": "at_least_num_passed_by_topic",
-        "params": "{'num': 1, 'topic': 'list'}"
+        "params": "{\"num\": 1, \"topic\": \"list\"}",
+        "group": "lists",
+        "level": 1
     }
 },
 {
@@ -18,7 +20,9 @@
         "description": "Padawan de listas: Al menos tres ejercicios del conjunto de problemas de listas",
         "symbol": "★★☰",
         "logic": "at_least_num_passed_by_topic",
-        "params": "{'num': 3, 'topic': 'list'}"
+        "params": "{\"num\": 3, \"topic\": \"list\"}",
+        "group": "lists",
+        "level": 3
     }
 },
 {
@@ -29,7 +33,9 @@
         "description": "Maestro de listas: Al menos cinco ejercicios del conjunto de problemas de listas",
         "symbol": "★★★☰",
         "logic": "at_least_num_passed_by_topic",
-        "params": "{'num': 5, 'topic': 'list'}"
+        "params": "{\"num\": 5, \"topic\": \"list\"}",
+        "group": "lists",
+        "level": 5
     }
 },
 {
@@ -40,7 +46,9 @@
         "description": "As de listas: Al menos 10 ejercicios del conjunto de problemas de listas",
         "symbol": "♦☰",
         "logic": "at_least_num_passed_by_topic",
-        "params": "{'num': 10, 'topic': 'list'}"
+        "params": "{\"num\": 10, \"topic\": \"list\"}",
+        "group": "lists",
+        "level": 10
     }
 },
 {
@@ -51,7 +59,9 @@
         "description": "El señor de las listas: Al menos 20 ejercicios del conjunto de problemas de lista",
         "symbol": "♔☰",
         "logic": "at_least_num_passed_by_topic",
-        "params": "{'num': 20, 'topic': 'list'}"
+        "params": "{\"num\": 20, \"topic\": \"list\"}",
+        "group": "lists",
+        "level": 20
     }
 },
 {
@@ -62,7 +72,9 @@
         "description": "Al menos un ejercicio de los conjuntos de problemas de listas, diccionarios y conjuntos",
         "symbol": "♨①",
         "logic": "at_least_num_passed_by_topics",
-        "params": "{'num': 1, 'topics': ['list', 'sets', 'dicts']}"
+        "params": "{\"num\": 1, \"topics\": [\"list\", \"sets\", \"dicts\"]}",
+        "group": "variety",
+        "level": 1
     }
 },
 {
@@ -73,7 +85,9 @@
         "description": "Aprendiz de cocina: Al menos tres ejercicios de cada uno de los conjuntos de problemas de listas, diccionarios y conjuntos",
         "symbol": "♨③",
         "logic": "at_least_num_passed_by_topics",
-        "params": "{'num': 1, 'topics': ['list', 'sets', 'dicts']}"
+        "params": "{\"num\": 3, \"topics\": [\"list\", \"sets\", \"dicts\"]}",
+        "group": "variety",
+        "level": 3
     }
 },
 {
@@ -84,7 +98,9 @@
         "description": "Cocinero: Al menos cinco ejercicios de cada uno de los conjuntos de problemas de listas, diccionarios y conjuntos",
         "symbol": "♨⑤",
         "logic": "at_least_num_passed_by_topics",
-        "params": "{'num': 5, 'topics': ['list', 'sets', 'dicts']}"
+        "params": "{\"num\": 5, \"topics\": [\"list\", \"sets\", \"dicts\"]}",
+        "group": "variety",
+        "level": 5
     }
 },
 {
@@ -95,7 +111,9 @@
         "description": "Gran cocinero: Al menos 10 ejercicios de cada uno de los conjuntos de problemas de listas, diccionarios y conjuntos",
         "symbol": "♨⑩",
         "logic": "at_least_num_passed_by_topics",
-        "params": "{'num': 10, 'topics': ['list', 'sets', 'dicts']}"
+        "params": "{\"num\": 10, \"topics\": [\"list\", \"sets\", \"dicts\"]}",
+        "group": "variety",
+        "level": 10
     }
 },
 {
@@ -106,7 +124,9 @@
         "description": "Gran cocinero: Al menos 20 ejercicios de cada uno de los conjuntos de problemas de listas, diccionarios y conjuntos",
         "symbol": "♨♦",
         "logic": "at_least_num_passed_by_topics",
-        "params": "{'num': 20, 'topics': ['list', 'sets', 'dicts']}"
+        "params": "{\"num\": 20, \"topics\": [\"list\", \"sets\", \"dicts\"]}",
+        "group": "variety",
+        "level": 20
     }
 },
 {
@@ -117,7 +137,9 @@
         "description": "Resolver el ejercicio «Omega»",
         "symbol": "Ω",
         "logic": "solved_exercise",
-        "params": "{'excercise_id': 234}"
+        "params": "{\"exercise_id\": 234}",
+        "group": "default",
+        "level": 1
     }
 },
 {
@@ -128,7 +150,9 @@
         "description": "Resolver los ejercicios Alfa y Omega",
         "symbol": "ΑΩ",
         "logic": "solved_exercises",
-        "params": "{'excercise_id': [189, 234]}"
+        "params": "{\"exercise_ids\": [189, 234]}",
+        "group": "default",
+        "level": 1
     }
 },
 {
@@ -139,7 +163,9 @@
         "description": "Resolver al menos un ejercicio",
         "symbol": "⊡",
         "logic": "at_least_num_passed",
-        "params": "{'num': 1}"
+        "params": "{\"num\": 1}",
+        "group": "basic",
+        "level": 1
     }
 },
 {
@@ -150,7 +176,9 @@
         "description": "Al menos tres ejercicios",
         "symbol": "∵",
         "logic": "at_least_num_passed",
-        "params": "{'num': 3}"
+        "params": "{\"num\": 3}",
+        "group": "basic",
+        "level": 3
     }
 },
 {
@@ -161,7 +189,9 @@
         "description": "Al menos diez ejercicios",
         "symbol": "⊠",
         "logic": "at_least_num_passed",
-        "params": "{'num': 10}"
+        "params": "{\"num\": 10}",
+        "group": "basic",
+        "level": 10
     }
 },
 {
@@ -172,7 +202,9 @@
         "description": "Doblete: Dos ejercicios resueltos el mismo día",
         "symbol": "Ⅱ⚽",
         "logic": "solved_same_day",
-        "params": "{'num': 2}"
+        "params": "{\"num\": 2}",
+        "group": "football",
+        "level": 2
     }
 },
 {
@@ -183,7 +215,9 @@
         "description": "Tres ejercicios resueltos el mismo día",
         "symbol": "Ⅲ⚽",
         "logic": "solved_same_day",
-        "params": "{'num': 3}"
+        "params": "{\"num\": 3}",
+        "group": "football",
+        "level": 3
     }
 },
 {
@@ -194,7 +228,9 @@
         "description": "Poker: Cuatro ejercicios el mismo día",
         "symbol": "Ⅳ⚽",
         "logic": "solved_same_day",
-        "params": "{'num': 4}"
+        "params": "{\"num\": 4}",
+        "group": "football",
+        "level": 4
     }
 },
 {
@@ -205,7 +241,9 @@
         "description": "Repoker: Cinco ejercicios el mismo día",
         "symbol": "Ⅴ⚽",
         "logic": "solved_same_day",
-        "params": "{'num': 5}"
+        "params": "{\"num\": 5}",
+        "group": "football",
+        "level": 5
     }
 },
 {
@@ -216,7 +254,9 @@
         "description": "Doble Hat-Trick: 6 ejercicios resueltos el mismo día",
         "symbol": "Ⅵ⚽",
         "logic": "solved_same_day",
-        "params": "{'num': 6}"
+        "params": "{\"num\": 6}",
+        "group": "football",
+        "level": 6
     }
 },
 {
@@ -227,7 +267,9 @@
         "description": "Un ejercicio resuelto durante una noche de luna llena",
         "symbol": "█░░░░ 🐺",
         "logic": "werewolf",
-        "params": "{'num':1}"
+        "params": "{\"num\":1}",
+        "group": "werewolf",
+        "level": 1
     }
 },
 {
@@ -238,7 +280,9 @@
         "description": "Tres ejercicio resuelto durante una noche de luna llena",
         "symbol": "██░░░ 🐺",
         "logic": "werewolf",
-        "params": "{'num':3}"
+        "params": "{\"num\":3}",
+        "group": "werewolf",
+        "level": 3
     }
 },
 {
@@ -249,7 +293,9 @@
         "description": "Cinco ejercicio resuelto durante una noche de luna llena",
         "symbol": "███░░ 🐺",
         "logic": "werewolf",
-        "params": "{'num':5}"
+        "params": "{\"num\":5}",
+        "group": "werewolf",
+        "level": 5
     }
 },
 {
@@ -260,7 +306,9 @@
         "description": "Siete ejercicios resueltos durante una noche de luna llena",
         "symbol": "████░ 🐺",
         "logic": "werewolf",
-        "params": "{'num':7}"
+        "params": "{\"num\":7}",
+        "group": "werewolf",
+        "level": 7
     }
 },
 {
@@ -271,7 +319,22 @@
         "description": "Diez ejercicios resuelto durante una noche de luna llena",
         "symbol": "█████ 🐺",
         "logic": "werewolf",
-        "params": "{'num':10}"
+        "params": "{\"num\":10}",
+        "group": "werewolf",
+        "level": 10
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 26,
+    "fields": {
+        "name": "Core Rookie",
+        "description": "Aprendiz del nucleo: Al menos un ejercicio del conjunto de problemas de core",
+        "symbol": "█░░░░ 🌀",
+        "logic": "at_least_num_passed_by_topic",
+        "params": "{\"num\": 1, \"topic\": \"core\"}",
+        "group": "core",
+        "level": 1
     }
 }
 ]

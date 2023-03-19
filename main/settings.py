@@ -27,7 +27,11 @@ SECRET_KEY = config('SECRET_KEY', default='hello-world')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=config.boolean)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=config.list)
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS',
+    default='0.0.0.0, localhost',
+    cast=config.list,
+)
 
 
 # Application definition
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
     'common.apps.CommonConfig',
     'docs.apps.DocsConfig',
     'homepage.apps.HomepageConfig',
+    'badges.apps.BadgesConfig',
     'core.apps.CoreConfig',
     'api.apps.ApiConfig',
 ]

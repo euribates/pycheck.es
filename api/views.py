@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from core.models import AuthToken, Context
+from badges.models import Achievement
 
 catalog = {}
 
@@ -80,3 +81,14 @@ def login(request):
         raise login_error(context_code, username)
     token = AuthToken.issue_token_for_student(student)
     return token.value
+
+
+@api_method
+def list_all_badges(request):
+    return [
+        {
+            'name': a.name,
+            'description': a.description,
+            'symbol': a.symbol,
+        } for a in Achievement.objects.all().order_by('name')
+    ]

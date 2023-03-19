@@ -1,0 +1,277 @@
+[
+{
+    "model": "badges.achievement",
+    "pk": 1,
+    "fields": {
+        "name": "List Rookie",
+        "description": "Aprendiz de listas: Al menos un ejercicio del conjunto de problemas de listas",
+        "symbol": "★☰",
+        "logic": "at_least_num_passed_by_topic",
+        "params": "{'num': 1, 'topic': 'list'}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 2,
+    "fields": {
+        "name": "List Padawan",
+        "description": "Padawan de listas: Al menos tres ejercicios del conjunto de problemas de listas",
+        "symbol": "★★☰",
+        "logic": "at_least_num_passed_by_topic",
+        "params": "{'num': 3, 'topic': 'list'}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 3,
+    "fields": {
+        "name": "List Master",
+        "description": "Maestro de listas: Al menos cinco ejercicios del conjunto de problemas de listas",
+        "symbol": "★★★☰",
+        "logic": "at_least_num_passed_by_topic",
+        "params": "{'num': 5, 'topic': 'list'}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 4,
+    "fields": {
+        "name": "Lists ace",
+        "description": "As de listas: Al menos 10 ejercicios del conjunto de problemas de listas",
+        "symbol": "♦☰",
+        "logic": "at_least_num_passed_by_topic",
+        "params": "{'num': 10, 'topic': 'list'}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 5,
+    "fields": {
+        "name": "Lord of the Lists",
+        "description": "El señor de las listas: Al menos 20 ejercicios del conjunto de problemas de lista",
+        "symbol": "♔☰",
+        "logic": "at_least_num_passed_by_topic",
+        "params": "{'num': 20, 'topic': 'list'}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 6,
+    "fields": {
+        "name": "Gourmet",
+        "description": "Al menos un ejercicio de los conjuntos de problemas de listas, diccionarios y conjuntos",
+        "symbol": "♨①",
+        "logic": "at_least_num_passed_by_topics",
+        "params": "{'num': 1, 'topics': ['list', 'sets', 'dicts']}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 7,
+    "fields": {
+        "name": "Staging",
+        "description": "Aprendiz de cocina: Al menos tres ejercicios de cada uno de los conjuntos de problemas de listas, diccionarios y conjuntos",
+        "symbol": "♨③",
+        "logic": "at_least_num_passed_by_topics",
+        "params": "{'num': 1, 'topics': ['list', 'sets', 'dicts']}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 8,
+    "fields": {
+        "name": "Cook",
+        "description": "Cocinero: Al menos cinco ejercicios de cada uno de los conjuntos de problemas de listas, diccionarios y conjuntos",
+        "symbol": "♨⑤",
+        "logic": "at_least_num_passed_by_topics",
+        "params": "{'num': 5, 'topics': ['list', 'sets', 'dicts']}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 9,
+    "fields": {
+        "name": "Chef",
+        "description": "Gran cocinero: Al menos 10 ejercicios de cada uno de los conjuntos de problemas de listas, diccionarios y conjuntos",
+        "symbol": "♨⑩",
+        "logic": "at_least_num_passed_by_topics",
+        "params": "{'num': 10, 'topics': ['list', 'sets', 'dicts']}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 10,
+    "fields": {
+        "name": "Ace Cheff",
+        "description": "Gran cocinero: Al menos 20 ejercicios de cada uno de los conjuntos de problemas de listas, diccionarios y conjuntos",
+        "symbol": "♨♦",
+        "logic": "at_least_num_passed_by_topics",
+        "params": "{'num': 20, 'topics': ['list', 'sets', 'dicts']}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 11,
+    "fields": {
+        "name": "Omega",
+        "description": "Resolver el ejercicio «Omega»",
+        "symbol": "Ω",
+        "logic": "solved_exercise",
+        "params": "{'excercise_id': 234}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 12,
+    "fields": {
+        "name": "Alfa-Omega",
+        "description": "Resolver los ejercicios Alfa y Omega",
+        "symbol": "ΑΩ",
+        "logic": "solved_exercises",
+        "params": "{'excercise_id': [189, 234]}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 13,
+    "fields": {
+        "name": "Welcome",
+        "description": "Resolver al menos un ejercicio",
+        "symbol": "⊡",
+        "logic": "at_least_num_passed",
+        "params": "{'num': 1}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 14,
+    "fields": {
+        "name": "Comfortable",
+        "description": "Al menos tres ejercicios",
+        "symbol": "∵",
+        "logic": "at_least_num_passed",
+        "params": "{'num': 3}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 15,
+    "fields": {
+        "name": "Confidence",
+        "description": "Al menos diez ejercicios",
+        "symbol": "⊠",
+        "logic": "at_least_num_passed",
+        "params": "{'num': 10}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 16,
+    "fields": {
+        "name": "Brace",
+        "description": "Doblete: Dos ejercicios resueltos el mismo día",
+        "symbol": "Ⅱ⚽",
+        "logic": "solved_same_day",
+        "params": "{'num': 2}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 17,
+    "fields": {
+        "name": "Hat Trick",
+        "description": "Tres ejercicios resueltos el mismo día",
+        "symbol": "Ⅲ⚽",
+        "logic": "solved_same_day",
+        "params": "{'num': 3}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 18,
+    "fields": {
+        "name": "Haul",
+        "description": "Poker: Cuatro ejercicios el mismo día",
+        "symbol": "Ⅳ⚽",
+        "logic": "solved_same_day",
+        "params": "{'num': 4}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 19,
+    "fields": {
+        "name": "Glut",
+        "description": "Repoker: Cinco ejercicios el mismo día",
+        "symbol": "Ⅴ⚽",
+        "logic": "solved_same_day",
+        "params": "{'num': 5}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 20,
+    "fields": {
+        "name": "Double Hat-Trick",
+        "description": "Doble Hat-Trick: 6 ejercicios resueltos el mismo día",
+        "symbol": "Ⅵ⚽",
+        "logic": "solved_same_day",
+        "params": "{'num': 6}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 21,
+    "fields": {
+        "name": "Baby Werewolf",
+        "description": "Un ejercicio resuelto durante una noche de luna llena",
+        "symbol": "█░░░░ 🐺",
+        "logic": "werewolf",
+        "params": "{'num':1}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 22,
+    "fields": {
+        "name": "Teen Werewolf",
+        "description": "Tres ejercicio resuelto durante una noche de luna llena",
+        "symbol": "██░░░ 🐺",
+        "logic": "werewolf",
+        "params": "{'num':3}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 23,
+    "fields": {
+        "name": "Werewolf in London",
+        "description": "Cinco ejercicio resuelto durante una noche de luna llena",
+        "symbol": "███░░ 🐺",
+        "logic": "werewolf",
+        "params": "{'num':5}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 24,
+    "fields": {
+        "name": "Alpha Werewolf",
+        "description": "Siete ejercicios resueltos durante una noche de luna llena",
+        "symbol": "████░ 🐺",
+        "logic": "werewolf",
+        "params": "{'num':7}"
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 25,
+    "fields": {
+        "name": "Werewolf Overlord",
+        "description": "Diez ejercicios resuelto durante una noche de luna llena",
+        "symbol": "█████ 🐺",
+        "logic": "werewolf",
+        "params": "{'num':10}"
+    }
+}
+]

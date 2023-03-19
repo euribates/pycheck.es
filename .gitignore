@@ -7,3 +7,5 @@ db.sqlite3
 CACHE
 node_modules
 .DS_Store
+tags
+*.swp

@@ -44,6 +44,9 @@ class Context(models.Model):
         section.save()
         return context
 
+    def __str__(self):
+        return self.code
+
     def load_student_by_username(self, username: str) -> Optional['Student']:
         '''Recupera un estudiante de la base de datos usando el username.
         Si no es capaz de encontrar ningún alumno con ese username, devuelve `None`.'''
@@ -80,7 +83,7 @@ class Student(models.Model):
         )
 
     def __str__(self):
-        return f'{self.username}@{self.context.name}'
+        return f'{self.username}@{self.context.code}'
 
     def touch(self):
         '''Registro la actividad de un estudiante.'''
@@ -96,6 +99,9 @@ class Topic(models.Model):
         max_length=32,
         unique=True,
     )
+
+    def __str__(self):
+        return self.name
 
 
 class Exercise(models.Model):
@@ -115,6 +121,9 @@ class Exercise(models.Model):
         null=True,
         related_name='exercises',
     )
+
+    def __str__(self):
+        return f"{self.name} [{self.topic}]"
 
     def save(self, *args, **kwargs):
         self.hash = hashlib.md5(self.name.encode()).hexdigest()

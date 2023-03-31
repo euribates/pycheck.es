@@ -4,8 +4,8 @@
     "pk": 1,
     "fields": {
         "name": "List Rookie",
-        "description": "Aprendiz de listas: Al menos un ejercicio del conjunto de problemas de listas",
-        "symbol": "★☰",
+        "description": "Al menos un ejercicio del conjunto de problemas de listas",
+        "symbol": "█░░░░ ☰",
         "logic": "at_least_num_passed_by_topic",
         "params": "{\"num\": 1, \"topic\": \"list\"}",
         "group": "lists",
@@ -17,8 +17,8 @@
     "pk": 2,
     "fields": {
         "name": "List Padawan",
-        "description": "Padawan de listas: Al menos tres ejercicios del conjunto de problemas de listas",
-        "symbol": "★★☰",
+        "description": "Al menos tres ejercicios del conjunto de problemas de listas",
+        "symbol": "██░░░ ☰",
         "logic": "at_least_num_passed_by_topic",
         "params": "{\"num\": 3, \"topic\": \"list\"}",
         "group": "lists",
@@ -30,8 +30,8 @@
     "pk": 3,
     "fields": {
         "name": "List Master",
-        "description": "Maestro de listas: Al menos cinco ejercicios del conjunto de problemas de listas",
-        "symbol": "★★★☰",
+        "description": "Al menos cinco ejercicios del conjunto de problemas de listas",
+        "symbol": "███░░ ☰",
         "logic": "at_least_num_passed_by_topic",
         "params": "{\"num\": 5, \"topic\": \"list\"}",
         "group": "lists",
@@ -43,8 +43,8 @@
     "pk": 4,
     "fields": {
         "name": "Lists ace",
-        "description": "As de listas: Al menos 10 ejercicios del conjunto de problemas de listas",
-        "symbol": "♦☰",
+        "description": "Al menos 10 ejercicios del conjunto de problemas de listas",
+        "symbol": "████░ ☰",
         "logic": "at_least_num_passed_by_topic",
         "params": "{\"num\": 10, \"topic\": \"list\"}",
         "group": "lists",
@@ -56,8 +56,8 @@
     "pk": 5,
     "fields": {
         "name": "Lord of the Lists",
-        "description": "El señor de las listas: Al menos 20 ejercicios del conjunto de problemas de lista",
-        "symbol": "♔☰",
+        "description": "Al menos 20 ejercicios del conjunto de problemas de lista",
+        "symbol": "█████ ☰",
         "logic": "at_least_num_passed_by_topic",
         "params": "{\"num\": 20, \"topic\": \"list\"}",
         "group": "lists",
@@ -69,8 +69,8 @@
     "pk": 6,
     "fields": {
         "name": "Gourmet",
-        "description": "Al menos un ejercicio de los conjuntos de problemas de listas, diccionarios y conjuntos",
-        "symbol": "♨①",
+        "description": "Al menos un ejercicio resuelto en los temas listas, diccionarios y conjuntos",
+        "symbol": "█░░░░ 🍲",
         "logic": "at_least_num_passed_by_topics",
         "params": "{\"num\": 1, \"topics\": [\"list\", \"sets\", \"dicts\"]}",
         "group": "variety",
@@ -82,8 +82,8 @@
     "pk": 7,
     "fields": {
         "name": "Staging",
-        "description": "Aprendiz de cocina: Al menos tres ejercicios de cada uno de los conjuntos de problemas de listas, diccionarios y conjuntos",
-        "symbol": "♨③",
+        "description": "Al menos tres ejercicios en los temas de listas, diccionarios y conjuntos",
+        "symbol": "██░░░ 🍲",
         "logic": "at_least_num_passed_by_topics",
         "params": "{\"num\": 3, \"topics\": [\"list\", \"sets\", \"dicts\"]}",
         "group": "variety",
@@ -95,8 +95,8 @@
     "pk": 8,
     "fields": {
         "name": "Cook",
-        "description": "Cocinero: Al menos cinco ejercicios de cada uno de los conjuntos de problemas de listas, diccionarios y conjuntos",
-        "symbol": "♨⑤",
+        "description": "Al menos cinco ejercicios de los temas de listas, diccionarios y conjuntos",
+        "symbol": "███░░ 🍲",
         "logic": "at_least_num_passed_by_topics",
         "params": "{\"num\": 5, \"topics\": [\"list\", \"sets\", \"dicts\"]}",
         "group": "variety",
@@ -108,8 +108,8 @@
     "pk": 9,
     "fields": {
         "name": "Chef",
-        "description": "Gran cocinero: Al menos 10 ejercicios de cada uno de los conjuntos de problemas de listas, diccionarios y conjuntos",
-        "symbol": "♨⑩",
+        "description": "Al menos 10 ejercicios de los temas de listas, diccionarios y conjuntos",
+        "symbol": "████░ 🍲",
         "logic": "at_least_num_passed_by_topics",
         "params": "{\"num\": 10, \"topics\": [\"list\", \"sets\", \"dicts\"]}",
         "group": "variety",
@@ -121,8 +121,8 @@
     "pk": 10,
     "fields": {
         "name": "Ace Cheff",
-        "description": "Gran cocinero: Al menos 20 ejercicios de cada uno de los conjuntos de problemas de listas, diccionarios y conjuntos",
-        "symbol": "♨♦",
+        "description": "Al menos 20 ejercicios de los temas de listas, diccionarios y conjuntos",
+        "symbol": "█████ 🍲",
         "logic": "at_least_num_passed_by_topics",
         "params": "{\"num\": 20, \"topics\": [\"list\", \"sets\", \"dicts\"]}",
         "group": "variety",
@@ -161,7 +161,7 @@
     "fields": {
         "name": "Welcome",
         "description": "Resolver al menos un ejercicio",
-        "symbol": "⊡",
+        "symbol": "👍",
         "logic": "at_least_num_passed",
         "params": "{\"num\": 1}",
         "group": "basic",
@@ -198,9 +198,9 @@
     "model": "badges.achievement",
     "pk": 16,
     "fields": {
-        "name": "Brace",
-        "description": "Doblete: Dos ejercicios resueltos el mismo día",
-        "symbol": "Ⅱ⚽",
+        "name": "Doblete",
+        "description": "Dos ejercicios resueltos el mismo día",
+        "symbol": "█░░░░ ⚽",
         "logic": "solved_same_day",
         "params": "{\"num\": 2}",
         "group": "football",
@@ -213,7 +213,7 @@
     "fields": {
         "name": "Hat Trick",
         "description": "Tres ejercicios resueltos el mismo día",
-        "symbol": "Ⅲ⚽",
+        "symbol": "██░░░ ⚽",
         "logic": "solved_same_day",
         "params": "{\"num\": 3}",
         "group": "football",
@@ -224,9 +224,9 @@
     "model": "badges.achievement",
     "pk": 18,
     "fields": {
-        "name": "Haul",
-        "description": "Poker: Cuatro ejercicios el mismo día",
-        "symbol": "Ⅳ⚽",
+        "name": "Poker",
+        "description": "Cuatro ejercicios el mismo día",
+        "symbol": "███░░ ⚽",
         "logic": "solved_same_day",
         "params": "{\"num\": 4}",
         "group": "football",
@@ -237,9 +237,9 @@
     "model": "badges.achievement",
     "pk": 19,
     "fields": {
-        "name": "Glut",
-        "description": "Repoker: Cinco ejercicios el mismo día",
-        "symbol": "Ⅴ⚽",
+        "name": "Repoker",
+        "description": "Cinco ejercicios el mismo día",
+        "symbol": "████░ ⚽",
         "logic": "solved_same_day",
         "params": "{\"num\": 5}",
         "group": "football",
@@ -252,7 +252,7 @@
     "fields": {
         "name": "Double Hat-Trick",
         "description": "Doble Hat-Trick: 6 ejercicios resueltos el mismo día",
-        "symbol": "Ⅵ⚽",
+        "symbol": "█████ ⚽",
         "logic": "solved_same_day",
         "params": "{\"num\": 6}",
         "group": "football",
@@ -277,7 +277,7 @@
     "pk": 22,
     "fields": {
         "name": "Teen Werewolf",
-        "description": "Tres ejercicio resuelto durante una noche de luna llena",
+        "description": "Tres ejercicios resueltos durante una noche de luna llena",
         "symbol": "██░░░ 🐺",
         "logic": "werewolf",
         "params": "{\"num\":3}",
@@ -290,7 +290,7 @@
     "pk": 23,
     "fields": {
         "name": "Werewolf in London",
-        "description": "Cinco ejercicio resuelto durante una noche de luna llena",
+        "description": "Cinco ejercicios resueltos durante una noche de luna llena",
         "symbol": "███░░ 🐺",
         "logic": "werewolf",
         "params": "{\"num\":5}",
@@ -329,12 +329,64 @@
     "pk": 26,
     "fields": {
         "name": "Core Rookie",
-        "description": "Aprendiz del nucleo: Al menos un ejercicio del conjunto de problemas de core",
+        "description": "Resolver al menos un ejercicio del core",
         "symbol": "█░░░░ 🌀",
         "logic": "at_least_num_passed_by_topic",
         "params": "{\"num\": 1, \"topic\": \"core\"}",
         "group": "core",
         "level": 1
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 27,
+    "fields": {
+        "name": "Core Padawan",
+        "description": "Resolver al menos tres ejercicios del core",
+        "symbol": "██░░░ 🌀",
+        "logic": "at_least_num_passed_by_topic",
+        "params": "{\"num\": 3, \"topic\": \"core\"}",
+        "group": "core",
+        "level": 2
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 28,
+    "fields": {
+        "name": "Core Master",
+        "description": "Resolver al menos cinco ejercicios del core",
+        "symbol": "███░░ 🌀",
+        "logic": "at_least_num_passed_by_topic",
+        "params": "{\"num\": 3, \"topic\": \"core\"}",
+        "group": "core",
+        "level": 3
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 29,
+    "fields": {
+        "name": "Core Ace",
+        "description": "Resolver al menos cinco ejercicios del core",
+        "symbol": "████░ 🌀",
+        "logic": "at_least_num_passed_by_topic",
+        "params": "{\"num\": 3, \"topic\": \"core\"}",
+        "group": "core",
+        "level": 4
+    }
+},
+{
+    "model": "badges.achievement",
+    "pk": 30,
+    "fields": {
+        "name": "Core Neo",
+        "description": "Resolver al menos doce ejercicios del core",
+        "symbol": "█████ 🌀",
+        "logic": "at_least_num_passed_by_topic",
+        "params": "{\"num\": 3, \"topic\": \"core\"}",
+        "group": "core",
+        "level": 5
     }
 }
 ]

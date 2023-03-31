@@ -90,5 +90,6 @@ def list_all_badges(request):
             'name': a.name,
             'description': a.description,
             'symbol': a.symbol,
-        } for a in Achievement.objects.all().order_by('name')
-    ]
+        }
+        for a in Achievement.objects.all()
+        ]

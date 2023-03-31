@@ -10,6 +10,14 @@ class Achievement(models.Model):
     """Logro que un estudiante debe alcanzar para
     alcanzar un badge.
     """
+
+    class Meta:
+        ordering = [
+            'group',
+            'level',
+            'name',
+            ]
+
     name = models.CharField(
         max_length=128,
         unique=True,

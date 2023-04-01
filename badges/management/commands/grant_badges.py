@@ -4,7 +4,7 @@ import sys
 from django.core.management.base import BaseCommand, CommandError
 from core.models import Context
 from badges.models import Achievement
-from badges.management.commands import get_student_and_context
+from core.students import get_student_and_context
 from badges.models import is_achievement_onlocked, grant_badge
 
 
@@ -15,7 +15,7 @@ class Command(BaseCommand):
         parser.add_argument('student')
 
     def handle(self, *args, **options):
-        context, student = get_student_and_context(options['student'])
+        student, context = get_student_and_context(options['student'])
         sys.stdout.write(f'Comprobando badges aplicables a {student}\n')
         achievements = (
             Achievement

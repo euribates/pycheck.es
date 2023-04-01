@@ -1,19 +1,30 @@
 import hashlib
+import re
 import uuid
 from datetime import timedelta
 from typing import Optional
 
 from django.contrib.auth.hashers import check_password
+from django.core.validators import RegexValidator
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 
 
+CONTEXT_PATTERN = re.compile(r'[a-z_][a-z_\-\/0-9]+', re.IGNORECASE)
+
+USERNAME_PATTERN = re.compile(r'[a-z_][a-z_\.0-9]+', re.IGNORECASE)
+
+
 class Context(models.Model):
     # 2022-2023/IESPTO/DAW/PRO
     # 2023-1/EOI/NAC
-    code = models.SlugField(unique=True, max_length=32)
+    code = models.SlugField(
+        unique=True,
+        max_length=32,
+        validators=[RegexValidator(CONTEXT_PATTERN)],
+        )
     name = models.CharField(unique=True, max_length=128)
     start_date = models.DateField()
     end_date = models.DateField()
@@ -30,7 +41,7 @@ class Context(models.Model):
     def load_context_by_code(cls, code: str):
         try:
             return cls.objects.get(code=code)
-        except (ObjectDoesNotExist, MultipleObjectsReturned):
+        except ObjectDoesNotExist:
             return None
 
     @classmethod
@@ -48,11 +59,14 @@ class Context(models.Model):
         return self.code
 
     def load_student_by_username(self, username: str) -> Optional['Student']:
-        '''Recupera un estudiante de la base de datos usando el username.
-        Si no es capaz de encontrar ningún alumno con ese username, devuelve `None`.'''
+        """Recupera un estudiante de la base de datos usando el username.
+
+        Si no es capaz de encontrar ningún alumno con ese username,
+        devuelve `None`.
+        """
         try:
             return self.students.get(username=username)
-        except (ObjectDoesNotExist, MultipleObjectsReturned):
+        except ObjectDoesNotExist:
             return None
 
 
@@ -67,7 +81,10 @@ class Section(models.Model):
 
 
 class Student(models.Model):
-    username = models.SlugField(max_length=32)
+    username = models.SlugField(
+        max_length=32,
+        validators=[RegexValidator(USERNAME_PATTERN)],
+        )
     password_hash = models.CharField(max_length=128)  # md5
     context = models.ForeignKey(
         Context,
@@ -186,12 +203,18 @@ class AuthToken(models.Model):
         default=None,
     )
 
-    def is_valid(self):
-        return self.valid_until is None
+    @classmethod
+    def load_auth_token(cls, id_token):
+        try:
+            return (
+                cls.objects
+                .select_related('student')
+                .select_related('student__context')
+                .get(value=id_token)
+                )
+        except ObjectDoesNotExist:
+            return None
 
-    def revoke_token(self):
-        self.valid_until = timezone.now()
-        self.save()
 
     @classmethod
     def issue_token_for_student(cls, student: Student) -> 'AuthToken':
@@ -199,3 +222,10 @@ class AuthToken(models.Model):
         token.save()
         student.touch()
         return token
+
+    def is_valid(self):
+        return self.valid_until is None
+
+    def revoke_token(self):
+        self.valid_until = timezone.now()
+        self.save()

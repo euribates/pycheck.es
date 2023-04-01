@@ -83,13 +83,38 @@ def login(request):
     return token.value
 
 
-@api_method
-def list_all_badges(request):
-    return [
-        {
-            'name': a.name,
-            'description': a.description,
-            'symbol': a.symbol,
+def as_achievement(achievement):
+    return {
+            'name': achievement.name,
+            'description': achievement.description,
+            'symbol': achievement.symbol,
         }
-        for a in Achievement.objects.all()
-        ]
+
+
+@api_method
+def list_all_achievements(request):
+    return [as_achievement(a) for a in Achievement.objects.all()]
+
+
+def as_badge(badge):
+    return {
+            'name': badge.achievement.name,
+            'description': badge.achievement.description,
+            'symbol': badge.achievement.symbol,
+            'granted_at': badge.granted_at.isoformat(),
+        }
+
+
+@api_method
+def list_owned_badges(request):
+    from icecream import ic; ic(    request)
+    body = json.loads(request.body)
+    token = body['token']
+    from icecream import ic; ic(token)
+    auth_token = AuthToken.load_auth_token(token)
+    from icecream import ic; ic(auth_token)
+    from icecream import ic; ic(auth_token.student)
+    if auth_token.student.badges.count() > 0:
+        return [as_badge(a) for a in auth_token.student.badges.all()]
+    return []
+

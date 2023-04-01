@@ -9,5 +9,6 @@ urlpatterns = [
     path('version/', views.version, name='version'),
     path('status/', views.status, name='status'),
     path('login/', views.login, name='login'),
-    path('badges/all/', views.list_all_badges, name='list_all_badges'),
+    path('badges/all/', views.list_all_achievements),
+    path('badges/owned/', views.list_owned_badges),
     ]

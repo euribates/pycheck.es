@@ -5,7 +5,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from core.models import AuthToken, Context
+from core.models import AuthToken, Context, Exercise
 from badges.models import Achievement
 
 catalog = {}
@@ -118,3 +118,15 @@ def list_owned_badges(request):
         return [as_badge(a) for a in auth_token.student.badges.all()]
     return []
 
+
+@api_method
+def exercise_detail(request, name: str):
+    exercise = Exercise.load_exercise_by_name(name)
+    return {
+        'pk': exercise.pk,
+        'name': exercise.name,
+        'topic': exercise.topic.name,
+        'title': exercise.title,
+        'description': exercise.description,
+        'template': exercise.template,
+    }

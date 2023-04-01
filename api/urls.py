@@ -11,4 +11,5 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('badges/all/', views.list_all_achievements),
     path('badges/owned/', views.list_owned_badges),
+    path('exercise/<slug:name>/', views.exercise_detail),
     ]

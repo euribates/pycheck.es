@@ -138,6 +138,26 @@ class Exercise(models.Model):
         null=True,
         related_name='exercises',
     )
+    title = models.CharField(
+        max_length=128,
+        default='Falta título',
+        help_text='Título del ejercicio',
+        )
+    description = models.TextField(
+        default='Falta descripción',
+        help_text='Explicaciones adicionales del ejercicio',
+        )
+    template = models.TextField(
+        default='',
+        help_text='Plantilla de ejemplo para el alumno',
+        )
+
+    @classmethod
+    def load_exercise_by_name(cls, name: str):
+        try:
+            return cls.objects.get(name=name)
+        except ObjectDoesNotExist:
+            return None
 
     def __str__(self):
         return f"{self.name} [{self.topic}]"

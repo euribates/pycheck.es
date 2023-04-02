@@ -21,7 +21,12 @@ class ContextAdmin(admin.ModelAdmin):
 
 class ExerciseAdmin(admin.ModelAdmin):
     ordering = ['pk']
-    list_display = ('pk', 'name', 'hash', 'topic')
+    list_display = ('name', 'title', 'hash', 'topic')
+    search_fields = [
+        'name',
+        'title',
+        'hash',
+        ]
     list_filter = ('topic',)
 
 

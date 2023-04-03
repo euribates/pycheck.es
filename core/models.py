@@ -159,6 +159,10 @@ class Exercise(models.Model):
         except ObjectDoesNotExist:
             return None
 
+    @property
+    def points(self):
+        return 1
+
     def __str__(self):
         return f"{self.name} [{self.topic}]"
 

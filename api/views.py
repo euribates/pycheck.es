@@ -5,7 +5,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from core.models import AuthToken, Context, Exercise
+from core.models import AuthToken, Context, Exercise, Submission
 from badges.models import Achievement
 
 catalog = {}
@@ -107,13 +107,9 @@ def as_badge(badge):
 
 @api_method
 def list_owned_badges(request):
-    from icecream import ic; ic(    request)
     body = json.loads(request.body)
     token = body['token']
-    from icecream import ic; ic(token)
     auth_token = AuthToken.load_auth_token(token)
-    from icecream import ic; ic(auth_token)
-    from icecream import ic; ic(auth_token.student)
     if auth_token.student.badges.count() > 0:
         return [as_badge(a) for a in auth_token.student.badges.all()]
     return []
@@ -130,3 +126,26 @@ def exercise_detail(request, name: str):
         'description': exercise.description,
         'template': exercise.template,
     }
+
+
+def as_score(submission: Submission) -> dict:
+    return {
+        'name': submission.exercise.name,
+        'points': submission.exercise.points,
+        'passed': submission.passed,
+        'submitted_at': submission.submitted_at.isoformat(),
+    }
+
+
+@api_method
+def score(request):
+    body = json.loads(request.body)
+    token = body['token']
+    auth_token = AuthToken.load_auth_token(token)
+    if auth_token.student.badges.count() > 0:
+        return [
+            as_score(score)
+            for score in auth_token.student.submissions.all()
+            ]
+    return []
+

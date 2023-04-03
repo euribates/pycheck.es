@@ -13,4 +13,5 @@ urlpatterns = [
     path('badges/all/', views.list_all_achievements),
     path('badges/owned/', views.list_owned_badges),
     path('exercise/<slug:name>/', views.exercise_detail),
+    path('submit/', views.submit),
     ]

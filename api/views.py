@@ -1,6 +1,7 @@
 import json
 from functools import wraps
 
+from django.utils import timezone
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -149,3 +150,47 @@ def score(request):
             ]
     return []
 
+
+@api_method
+def submit(request):
+    body = json.loads(request.body)
+    token = body['token']
+    auth_token = AuthToken.load_auth_token(token)
+    if not auth_token or not auth_token.is_valid():
+        raise ValueError('Token inváłido')
+    from icecream import ic; ic(auth_token)
+    student = auth_token.student
+    from icecream import ic; ic(student)
+    payload = body['payload']
+    name = payload['name']
+    exercise = Exercise.load_exercise_by_name(name)
+    from icecream import ic; ic(exercise)
+    from icecream import ic; ic('before')
+    from icecream import ic; ic(Submission.objects.all().count())
+    from icecream import ic; ic(
+        Submission.objects
+        .filter(student=student)
+        .filter(exercise=exercise)
+        .count()
+        )
+    submission = (
+        Submission.objects
+        .filter(student=student, exercise=exercise)
+        .first()
+        )
+    from icecream import ic; ic(submission)
+    if submission:
+        submission.body = payload['body']
+        submission.submitted_at = timezone.now()
+        submission.passed = False
+    else:
+        submission = Submission(
+            student=student,
+            exercise=exercise,
+            body=payload['body'],
+            submitted_at=timezone.now(),
+            passed=False,
+            )
+    from icecream import ic; ic('after')
+    submission.save()
+    return submission.pk

@@ -186,6 +186,14 @@ class Submission(models.Model):
     body = models.TextField()
     submitted_at = models.DateTimeField(auto_now_add=True)
 
+    @classmethod
+    def pending_submissions(cls):
+        '''Entregas pendientes de ser comprobadas.
+
+        Ordenadas por fecha de entrega.
+        '''
+        return cls.objects.filter(passed=False).order_by('submitted_at')
+
     def check_exercise(self):
         # if self.is_submission_open():
         # ...

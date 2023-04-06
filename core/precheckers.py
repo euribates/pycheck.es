@@ -16,9 +16,6 @@ class NeedsImplementation(ast.NodeVisitor):
         self.result = False
 
     def visit_Constant(self, node):
-        from icecream import ic; ic(node)
-        from icecream import ic; ic(node.value)
-        from icecream import ic; ic(node.value is ...)
         if node.value is ...:
             self.result = True
 
@@ -28,6 +25,8 @@ class NeedsImplementation(ast.NodeVisitor):
 
 
 def needs_implementation(tree):
+    """Returns True if there are ellipsis (...) or pass statements in tree.
+    """
     analyzer = NeedsImplementation()
     analyzer.visit(tree)
     return analyzer.result
@@ -43,7 +42,30 @@ class FunctionFinder(ast.NodeVisitor):
 
 
 def find_functions(tree):
+    """Find all the functions declared in tree.
+
+    Result is a dictionary of str (with function name) ==> subtree
+    """
     analyzer = FunctionFinder()
+    analyzer.visit(tree)
+    return analyzer.result
+
+
+class ClassFinder(ast.NodeVisitor):
+
+    def __init__(self):
+        self.result = {}
+
+    def visit_ClassDef(self, node):
+        self.result[node.name] = node
+
+
+def find_classes(tree):
+    """Find all the classes declared in tree.
+
+    Result is a dictionary of str (with class name) ==> subtree
+    """
+    analyzer = ClassFinder()
     analyzer.visit(tree)
     return analyzer.result
 

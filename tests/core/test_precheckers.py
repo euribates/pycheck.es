@@ -66,5 +66,25 @@ class Alfa:
     assert precheckers.needs_implementation(tree) is True
 
 
+def test_find_classes():
+    """Find all classes in source tree.
+    """
+    tree = ast.parse('''
+class Alfa:
+    pass
+
+class Beta(Alfa):
+    pass
+
+def Omega(Alfa):
+    pass
+''')
+    _classes = precheckers.find_classes(tree)
+    assert 'Alfa' in _classes
+    assert 'Beta' in _classes
+    assert 'Omega' not in _classes
+    assert len(_classes) == 2
+
+
 if __name__ == "__main__":
     pytest.main()

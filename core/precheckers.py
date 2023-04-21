@@ -1,10 +1,71 @@
-import traceback; 
-import os
+import traceback 
+from typing import Callable, List
 import ast
-from types import ModuleType
-from typing import Any, Callable, List
-import copy
+import importlib
+import os
 
+__all__ = [
+    'Success',
+    'Failure',
+    'check_file_exists',
+    'check_source_syntax',
+    'check_source_compiles',
+    'find_functions',
+    'find_classes',
+    'find_asserts',
+    'needs_implementation',
+    ]
+
+
+class CheckResult:
+
+    def __init__(self, number: int, message: str, exception=None):
+        self.number = number
+        self.message = message
+
+    def order(self):
+        return f'{self.number:04d}'
+
+
+class Success(CheckResult):
+
+    def __bool__(self):
+        return True
+
+    def __str__(self):
+        return "[green]Ok[/]"
+
+    def as_dict(self):
+        return {
+            'status': 'success',
+            'order': self.number,
+            'message': self.message,
+        }
+
+
+class Failure(CheckResult):
+
+    def __init__(self, number: int, message: str, exception):
+        super().__init__(number, message)
+        self.exception = exception
+        self.traceback = ''.join(
+            traceback.format_exception(exception)
+            )
+
+    def __bool__(self):
+        return False
+
+    def __str__(self):
+        return f"[red]Error[/] {self.message}"
+
+    def as_dict(self):
+        return {
+            'status': 'failure',
+            'order': self.number,
+            'message': self.message,
+            'exception': repr(self.exception),
+            'traceback': self.traceback,
+        }
 
 class PrecheckError(Exception):
     pass
@@ -70,14 +131,37 @@ def find_classes(tree):
     return analyzer.result
 
 
+class AssertFinder(ast.NodeVisitor):
+
+    def __init__(self):
+        self.result = []
+
+    def visit_Assert(self, node):
+        statement = ast.unparse(node.test)
+        message = ast.unparse(node.msg) if node.msg else repr(statement)
+        self.result.append(
+            (statement, message)
+            )
+
+
+def find_asserts(tree):
+    """Find all the asserts declared in tree.
+
+    Result is a list
+    """
+    analyzer = AssertFinder()
+    analyzer.visit(tree)
+    return analyzer.result
+
+
 def error_no_existe_fichero(filename):
-    raise FileNotFoundError(
+    raise PrecheckError(
         f'No puedo encontrar el fichero {filename}. Seguro que'
         ' es correcto el nombre?'
         )
 
 
-def error_no_compila(err, filename):
+def error_no_compila(filename, err):
     lineno = err.lineno if hasattr(err, 'lineno') else None
     message = [
         f'No puedo analizar el fichero {filename}. Es posible',
@@ -89,73 +173,50 @@ def error_no_compila(err, filename):
         message.append(f'\nCódigo fuente:\n\n{err.text}\n')
     for line in traceback.format_exception(err):
         message.append(line)
-    raise SyntaxError('\n'.join(message))
+    raise PrecheckError('\n'.join(message)) from err
 
 
-def file_exists(filename):
+def check_file_exists(filename):
     if os.path.isfile(filename):
         with open(filename, 'r', encoding='utf-8') as _input:
             content = _input.read()
             return content
-    raise error_no_existe_fichero(filename)
+    error_no_existe_fichero(filename)
 
 
-def source_compiles(content, filename):
+def check_source_syntax(source, filename):
     try:
-        tree = ast.parse(content, filename=filename, type_comments=True)
+        tree = ast.parse(source, filename=filename, type_comments=True)
         return tree
     except ValueError as err:
-        from icecream import ic; ic(err)
-        raise error_no_compila(err, filename)
+        error_no_compila(filename, err)
+    except SyntaxError as err:
+        error_no_compila(filename, err)
 
 
-def function_is_defined(tree, function_name):
+def check_source_compiles(tree, filename):
+    try:
+        module_name, _ = os.path.splitext(filename)
+        module = importlib.import_module(module_name)
+        if "__all__" in module.__dict__:
+            names = module.__dict__["__all__"]
+        else:
+            # Import all names not begining with _
+            names = [x for x in module.__dict__ if not x.startswith("_")]
+        return module, names
+    except Exception as err:
+        error_no_compila(filename, err)
+
+
+def check_function_is_defined(tree, function_name):
     analyzer = FunctionFinder()
     analyzer.visit(tree)
     if function_name not in analyzer.result:
         raise PrecheckError(f'No se ha definido la función {function_name}')
 
 
-
-
-class PreCheck:
-
-    def __init__(self, template_filename):
-        self.source = file_exists(template_filename)
-        self.tree = source_compiles(self.source, template_filename)
-        self.required_functions = []
-        all_functions = find_functions(self.tree)
-        for function_name in all_functions:
-            subtree = all_functions[function_name]
-            if needs_implementation(subtree):
-                self.required_functions.append(function_name)
-
-    def __call__(self, filename):
-        source = file_exists(filename)
-        try:
-            tree = source_compiles(source, filename)
-        except SyntaxError as err:
-            from icecream import ic; ic('SyntaxError')
-            raise error_no_compila(err, filename)
-        for function_name in self.required_functions:
-            function_is_defined(tree, function_name)
-        try:
-            from icecream import ic; ic('antes de compilar')
-            compiled_module = compile(tree, filename, mode='exec')
-            from icecream import ic; ic('antes de compilar (2)')
-            compiled_module = compile(tree, filename, mode='exec')
-            from icecream import ic; ic('antes de compilar (3)')
-            _module = ModuleType("precheck_module")
-            from icecream import ic; ic('antes de compilar (4)')
-            exec(compiled_module, _module.__dict__)
-            from icecream import ic; ic('después de compilar')
-        except Exception as err:
-            raise error_no_compila(err, filename)
-
-        if "__all__" in _module.__dict__:
-            names = _module.__dict__["__all__"]
-        else:
-            # otherwise we import all names that don't begin with _
-            names = [x for x in _module.__dict__ if not x.startswith("_")]
-        # now drag them in
-        return _module, names
+def check_class_is_defined(tree, class_name):
+    analyzer = ClassFinder()
+    analyzer.visit(tree)
+    if class_name not in analyzer.result:
+        raise PrecheckError(f'No se ha definido la clase {class_name}')

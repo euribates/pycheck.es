@@ -77,3 +77,6 @@ clean:
     find . -type f -name "*.pyc" -delete
     find . -type f -name "*.pyo" -delete
 
+# Ejecuta tests
+test: clean
+    python -m pytest tests/ -v

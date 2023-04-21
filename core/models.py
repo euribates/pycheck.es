@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import hashlib
 import re
 import uuid
@@ -185,6 +187,17 @@ class Submission(models.Model):
     passed = models.BooleanField(default=False)
     body = models.TextField()
     submitted_at = models.DateTimeField(auto_now_add=True)
+
+    @classmethod
+    def load_submission(cls, id_submission: int) -> Submission|None:
+        '''Devuelve una entrega a partir de la clave primaria.
+
+        Si no existe, devuelve `None`.
+        '''
+        try:
+            return cls.objects.get(pk=id_submission)
+        except ObjectDoesNotExist:
+            return None
 
     @classmethod
     def pending_submissions(cls):

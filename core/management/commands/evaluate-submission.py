@@ -20,8 +20,10 @@ from core.precheckers import (
     )
 
 
-def matraca(exercise):
+def evaluate_submission(submission):
+    exercise = submission.exercise
     source = exercise.template
+    print(submission, exercise)
     print(source)
     filename = f'{exercise.name}.py'
     tree = check_source_syntax(source, filename)
@@ -70,8 +72,8 @@ class Command(BaseCommand):
             raise CommandError(
                 'No existe ninguna entrega con el identificador indicado'
                 )
-        exercise = submission.exercise
-        print(submission, exercise)
+        evaluate_submission(submission)
+
         self.stdout.write(
             self.style.SUCCESS(f'Evaluando ejercicio {exercise}')
         )

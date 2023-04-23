@@ -1,8 +1,11 @@
-from django.contrib import admin
+import json
 
+from django.contrib import admin
+from django.utils.html import format_html
 
 from core.models import Context
 from core.models import Exercise
+from core.models import Guard
 from core.models import Student
 from core.models import Submission
 from core.models import Topic
@@ -45,3 +48,28 @@ admin.site.register(Context, ContextAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(Submission, SubmissionAdmin)
+
+
+class GuardAdmin(admin.ModelAdmin):
+    ordering = ['pk']
+    list_display = ('pk', 'as_logic', 'description')
+
+    @admin.display(description='Lógica')
+    def as_logic(self, obj):
+        try:
+            params = json.loads(obj.params)
+        except json.JSONDecodeError as err:
+            return f"ERROR: {err}"
+        return format_html(''.join([
+            '<code>',
+            f'{obj.logic}(',
+            ', '.join([
+                f'{name}={value!r}'
+                for name, value in params.items()
+            ]),
+            ')',
+            '</code>',
+        ]))
+
+
+admin.site.register(Guard, GuardAdmin)

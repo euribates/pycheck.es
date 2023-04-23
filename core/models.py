@@ -1,18 +1,32 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 import uuid
 from datetime import timedelta
 from typing import Optional
 
 from django.contrib.auth.hashers import check_password
-from django.core.validators import RegexValidator
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
+from django.core.validators import RegexValidator
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.text import slugify
 
+from core.precheckers import (
+    Success,
+    Failure,
+    check_file_exists,
+    check_source_syntax,
+    check_source_compiles,
+    find_functions,
+    find_classes,
+    find_asserts,
+    needs_implementation,
+    )
 
 CONTEXT_PATTERN = re.compile(r'[a-z_][a-z_\-\/0-9]+', re.IGNORECASE)
 
@@ -274,3 +288,84 @@ class AuthToken(models.Model):
     def revoke_token(self):
         self.valid_until = timezone.now()
         self.save()
+
+
+class Guard(models.Model):
+    """Code to be executed as preconditions for an exercise.
+    """
+    exercise = models.ForeignKey(
+        Exercise,
+        on_delete=models.PROTECT,
+        related_name='guards',
+    )
+    logic = models.CharField(
+        max_length=64,
+        help_text="Nombre del _callable_ responsable",
+        )
+    params = models.CharField(
+        max_length=64,
+        help_text=(
+            "Parámetros necesarios para la lógica, si fueran"
+            " necesarios, en formato JSON."
+            )
+        )
+    description = models.TextField()
+
+
+@receiver(post_save, sender=Exercise)
+def create_guards(sender, **kwargs):
+    raw = kwargs.pop('raw', False)
+    if raw:
+        # El parámetto `raw` es verdadero si el modelo debe ser
+        # almacenado exactamente como está, normalmente porque
+        # se está cargando una _fixture_. No se deben consultar ni
+        # realizar modificaciones en la base de datos si `raw`
+        # es verdadero.
+        return
+    update_fields = kwargs.pop('update_fields')
+    if update_fields and 'template' not in update_fields:
+        # No hay necesidad de regenerar los guards si no se ha
+        # modificado la plantilla del ejercicio.
+        return
+    exercise = kwargs['instance']
+    filename = f'template-{exercise.name}.py'
+    tree = check_source_syntax(exercise.template, filename)
+    all_functions = find_functions(tree)
+    for function_name in all_functions:
+        subtree = all_functions[function_name]
+        if needs_implementation(subtree):
+            guard = Guard(
+                exercise=exercise,
+                logic='must_implement_function',
+                params=json.dumps({'function_name': function_name}),
+                description=f"Debe implementar la función {function_name}",
+                )
+            guard.save()
+    all_classes = find_classes(tree)
+    for class_name in all_classes:
+        subtree = all_classes[class_name]
+        if needs_implementation(subtree):
+            guard = Guard(
+                exercise=exercise,
+                logic='must_implement_class',
+                params=json.dumps({'class_name': class_name}),
+                description=f"Debe implementar la clase {class_name}",
+                )
+            guard.save()
+        all_methods = find_functions(subtree)
+        for method_name in all_methods:
+            method_subtree = all_methods[method_name]
+            if needs_implementation(method_subtree):
+                guard = Guard(
+                    exercise=exercise,
+                    logic='must_implement_method',
+                    params=json.dumps({
+                        'class_name': class_name,
+                        'method_name': method_name,
+                    }),
+                    description=(
+                        f"Debe implementar el método {method_name}"
+                        f" en la clase {class_name}"
+                        ),
+                    )
+                guard.save()

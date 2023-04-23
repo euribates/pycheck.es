@@ -1,8 +1,10 @@
 import os
 import shutil
-import pathlib
+from pathlib import Path
+import tempfile
+import subprocess
 
-
+import jinja2
 from django.core.management.base import BaseCommand, CommandError
 from getpass import getpass
 
@@ -20,43 +22,55 @@ from core.precheckers import (
     )
 
 
-def evaluate_submission(submission):
-    exercise = submission.exercise
-    source = exercise.template
-    print(submission, exercise)
-    print(source)
-    filename = f'{exercise.name}.py'
-    tree = check_source_syntax(source, filename)
-    need_implementation = []
-    all_functions = find_functions(tree)
-    for fn in all_functions:
-        print(fn)
-        print(all_functions[fn])
-        import ast
-        print(ast.unparse(all_functions[fn]))
-        print(needs_implementation(all_functions[fn]))
-    for function_name in all_functions:
-        subtree = all_functions[function_name]
-        if needs_implementation(subtree):
-            need_implementation.append(
-                f"check_function_is_defined(tree, '{function_name}')"
-                )
-    all_classes = find_classes(tree)
-    for class_name in all_classes:
-        subtree = all_classes[class_name]
-        if needs_implementation(subtree):
-            need_implementation.append(
-                f"check_class_is_defined(tree, '{class_name}')"
-                )
+def create_main_file(exercise):
+    env = jinja2.Environment(loader=jinja2.PackageLoader("core"))
+    template = env.get_template('core/main.py')
+    return template.render({
+        'exercise': exercise,
+        'zeropad': lambda i: f'{i:04d}',
+        })
 
-    all_checks = [
-        f'def check_{counter:04d}():\n'
-        f'    {message}\n'
-        f'    assert {statement}\n'
-        for counter, (statement, message)
-        in enumerate(find_asserts(tree), start=1)
+
+def run_sandbox(directory):
+    cmd_and_args = [
+        'docker',
+        'run',
+        '--rm',
+        '--volume', f'{directory}:/sandbox',
+        'sandbox:latest',
         ]
-    return need_implementation, all_checks
+    print(*cmd_and_args)
+    result = subprocess.run(
+        cmd_and_args,
+        capture_output=True,
+        )
+    print(result.stdout.decode('utf-8'))
+    return result.returncode == 0
+
+
+def create_sandbox(submission):
+    exercise = submission.exercise
+    directory = tempfile.TemporaryDirectory()
+    full_path = Path(directory.name)
+    print(f'Creado directorio {full_path}')
+    with open(full_path / exercise.filename, 'w', encoding='utf-8') as f_out:
+        f_out.write(submission.body)
+    shutil.copyfile('./core/__init__.py', full_path / '__init__.py')
+    shutil.copyfile('./core/precheckers.py', full_path / 'precheckers.py')
+    main_source = create_main_file(exercise)
+    with open(full_path / 'tests.py', 'w', encoding='utf-8') as f_out:
+        f_out.write(main_source)
+    return directory
+
+
+def evaluate_submission(submission):
+    with create_sandbox(submission) as sandbox:
+        print(f"Sandbox creado en {sandbox}")
+        result = run_sandbox(sandbox)
+        return result
+
+
+    
 
 
 class Command(BaseCommand):
@@ -72,25 +86,12 @@ class Command(BaseCommand):
             raise CommandError(
                 'No existe ninguna entrega con el identificador indicado'
                 )
-        evaluate_submission(submission)
-
-        self.stdout.write(
-            self.style.SUCCESS(f'Evaluando ejercicio {exercise}')
+        self.stdout.write(self.style.SUCCESS(
+            f'Evaluando ejercicio {submission.exercise}'
+            f' presentado por {submission.student}')
         )
-        SANDBOX = pathlib.Path('./submissions')
-        base_dir = SANDBOX / str(id_submission)
-        os.makedirs(base_dir, exist_ok=True)
-        code_source = f'{exercise.name}.py'
-        with open(base_dir / code_source, 'w', encoding='utf-8') as f_out:
-            f_out.write(submission.body)
-        shutil.copyfile('./core/precheckers.py', f'{base_dir}/precheckers.py')
-        self.stdout.write(
-            self.style.SUCCESS(f'Creado sandbox {base_dir}')
-        )
-        needs_implementation, all_checks = matraca(exercise)
-        for stmt in needs_implementation:
-            print(stmt)
-        for check_function in all_checks:
-            print(check_function)
-        
-
+        success = evaluate_submission(submission)
+        if success is True:
+            self.stdout.write(self.style.SUCCESS('OK, submission pass'))
+        else:
+            self.stdout.write(self.style.ERROR('Sorry, submission do NOT pass'))

@@ -53,6 +53,7 @@ admin.site.register(Submission, SubmissionAdmin)
 class GuardAdmin(admin.ModelAdmin):
     ordering = ['pk']
     list_display = ('pk', 'as_logic', 'description')
+    list_filter = ('exercise',)
 
     @admin.display(description='Lógica')
     def as_logic(self, obj):

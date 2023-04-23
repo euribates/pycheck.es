@@ -167,6 +167,10 @@ class Exercise(models.Model):
         default='',
         help_text='Plantilla de ejemplo para el alumno',
         )
+    asserts = models.TextField(
+        default='',
+        help_text='Asserts que debe pasar el código',
+        )
 
     @classmethod
     def load_exercise_by_name(cls, name: str):
@@ -174,6 +178,10 @@ class Exercise(models.Model):
             return cls.objects.get(name=name)
         except ObjectDoesNotExist:
             return None
+
+    @property
+    def filename(self):
+        return f'{self.name}.py'
 
     @property
     def points(self):
@@ -311,6 +319,21 @@ class Guard(models.Model):
         )
     description = models.TextField()
 
+    def as_call(self):
+        buff = [
+            self.logic,
+            '(',
+            'tree',
+            ]
+        params = json.loads(self.params)
+        for name, value in params.items():
+            buff.append(', ')
+            buff.append(name)
+            buff.append('=')
+            buff.append(repr(value))
+        buff.append(')')
+        return ''.join(buff)
+
 
 @receiver(post_save, sender=Exercise)
 def create_guards(sender, **kwargs):
@@ -330,6 +353,7 @@ def create_guards(sender, **kwargs):
     exercise = kwargs['instance']
     filename = f'template-{exercise.name}.py'
     tree = check_source_syntax(exercise.template, filename)
+    exercise.guards.all().delete()
     all_functions = find_functions(tree)
     for function_name in all_functions:
         subtree = all_functions[function_name]

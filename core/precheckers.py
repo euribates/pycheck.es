@@ -14,6 +14,10 @@ __all__ = [
     'find_classes',
     'find_asserts',
     'needs_implementation',
+    'must_implement_function',
+    'must_implement_class',
+    'must_implement_method',
+
     ]
 
 
@@ -208,15 +212,40 @@ def check_source_compiles(tree, filename):
         error_no_compila(filename, err)
 
 
-def check_function_is_defined(tree, function_name):
+def must_implement_function(tree, function_name):
     analyzer = FunctionFinder()
     analyzer.visit(tree)
     if function_name not in analyzer.result:
         raise PrecheckError(f'No se ha definido la función {function_name}')
+    if needs_implementation(tree):
+        raise PrecheckError(f'No se ha implementado la función {function_name}')
+    return True
 
 
-def check_class_is_defined(tree, class_name):
+def must_implement_class(tree, class_name):
     analyzer = ClassFinder()
     analyzer.visit(tree)
     if class_name not in analyzer.result:
         raise PrecheckError(f'No se ha definido la clase {class_name}')
+    if needs_implementation(tree):
+        raise PrecheckError(f'No se ha implementado la clase {class_name}')
+    return True
+
+
+def must_implement_method(tree, class_name, method_name):
+    analyzer = ClassFinder()
+    analyzer.visit(tree)
+    all_classes = find_classes(tree)
+    subtree = all_classes[class_name]
+    all_methods = find_functions(subtree)
+    if method_name not in all_methods:
+        raise PrecheckError(
+            f'No se ha definido el método {method_name}'
+            f' en la clase {class_name}'
+            )
+    if needs_implementation(subtree):
+        raise PrecheckError(
+            f'No se ha implementado el método {method_name}'
+            f' de la clase {class_name}'
+            )
+    return True
